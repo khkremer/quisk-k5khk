@@ -1,0 +1,90 @@
+[
+    {
+        "id": "k5khk_status_httpin",
+        "type": "http in",
+        "z": "b09908b927c79022",
+        "name": "Antenna Status HTTP",
+        "url": "/antenna_status",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 170,
+        "y": 820,
+        "wires": [
+            [
+                "k5khk_status_cmd"
+            ]
+        ]
+    },
+    {
+        "id": "k5khk_status_cmd",
+        "type": "change",
+        "z": "b09908b927c79022",
+        "name": "cmd q;",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "q;",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 370,
+        "y": 820,
+        "wires": [
+            [
+                "k5khk_status_serial"
+            ]
+        ]
+    },
+    {
+        "id": "k5khk_status_serial",
+        "type": "serial request",
+        "z": "b09908b927c79022",
+        "name": "Antenna Switch Query",
+        "serial": "cb68cbd735914470",
+        "x": 580,
+        "y": 820,
+        "wires": [
+            [
+                "k5khk_status_parse"
+            ]
+        ]
+    },
+    {
+        "id": "k5khk_status_parse",
+        "type": "function",
+        "z": "b09908b927c79022",
+        "name": "to JSON object",
+        "func": "let s = msg.payload;\nif (Buffer.isBuffer(s)) s = s.toString();\nif (typeof s === 'string') {\n    s = s.trim();\n    // serial framing may strip the closing brace\n    if (s.indexOf('{') === 0 && s.lastIndexOf('}') !== s.length - 1) s += '}';\n    try { s = JSON.parse(s); } catch (e) { s = null; }\n}\nif (!s || typeof s !== 'object' || typeof s.ant1 === 'undefined') {\n    msg.payload = { ant1: false, ant2: false, ant3: false, ok: false };\n} else {\n    msg.payload = { ant1: !!s.ant1, ant2: !!s.ant2, ant3: !!s.ant3, ok: true };\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 820,
+        "wires": [
+            [
+                "k5khk_status_httpres"
+            ]
+        ]
+    },
+    {
+        "id": "k5khk_status_httpres",
+        "type": "http response",
+        "z": "b09908b927c79022",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1010,
+        "y": 820,
+        "wires": []
+    }
+]

@@ -1,0 +1,354 @@
+[
+    {
+        "id": "b09908b927c79022",
+        "type": "tab",
+        "label": "Antenna Switch",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "3af7477f0ef053ba",
+        "type": "inject",
+        "z": "b09908b927c79022",
+        "name": "Every 5 seconds",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "10",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "q;",
+        "payloadType": "str",
+        "x": 150,
+        "y": 360,
+        "wires": [
+            [
+                "e1a9400b6bd80728"
+            ]
+        ]
+    },
+    {
+        "id": "4d9ccf959ab4d7d7",
+        "type": "json",
+        "z": "b09908b927c79022",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 610,
+        "y": 360,
+        "wires": [
+            [
+                "1c3e2b3f842cf5cf"
+            ]
+        ]
+    },
+    {
+        "id": "1c3e2b3f842cf5cf",
+        "type": "function",
+        "z": "b09908b927c79022",
+        "name": "Parse JSON",
+        "func": "// parse the msg.payload structure\nvar p1, p2, p3;\nif (typeof msg.payload.ant1 != \"undefined\") {\n    p1 = { payload: msg.payload.ant1, background: msg.payload.ant1 ? \"green\" : \"gray\"};\n    p2 = { payload: msg.payload.ant2, background: msg.payload.ant2 ? \"green\" : \"gray\" };\n    p3 = { payload: msg.payload.ant3, background: msg.payload.ant3 ? \"green\" : \"gray\" };\n}\nelse {\n    p1 = { payload: false, background: \"gray\" };\n    p2 = { payload: false, background: \"gray\" };\n    p3 = { payload: false, background: \"gray\" };\n}\nreturn [ p1, p2, p3 ];",
+        "outputs": 3,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 700,
+        "wires": [
+            [
+                "b910401caecdbf58"
+            ],
+            [
+                "291af4c06fc1e9b8"
+            ],
+            [
+                "1fad30b61d2b44a8"
+            ]
+        ]
+    },
+    {
+        "id": "e1a9400b6bd80728",
+        "type": "serial request",
+        "z": "b09908b927c79022",
+        "name": "Antenna Switch",
+        "serial": "cb68cbd735914470",
+        "x": 360,
+        "y": 360,
+        "wires": [
+            [
+                "4d9ccf959ab4d7d7",
+                "28e3e167442f79f9"
+            ]
+        ]
+    },
+    {
+        "id": "b910401caecdbf58",
+        "type": "ui_button",
+        "z": "b09908b927c79022",
+        "name": "",
+        "group": "8cabfa32056e8eec",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "KX3",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "{{msg.background}}",
+        "className": "",
+        "icon": "",
+        "payload": "s1;",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 750,
+        "y": 480,
+        "wires": [
+            [
+                "e1a9400b6bd80728"
+            ]
+        ]
+    },
+    {
+        "id": "291af4c06fc1e9b8",
+        "type": "ui_button",
+        "z": "b09908b927c79022",
+        "name": "",
+        "group": "8cabfa32056e8eec",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "HL2",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "{{msg.background}}",
+        "className": "",
+        "icon": "",
+        "payload": "s2;",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 750,
+        "y": 520,
+        "wires": [
+            [
+                "e1a9400b6bd80728"
+            ]
+        ]
+    },
+    {
+        "id": "1fad30b61d2b44a8",
+        "type": "ui_button",
+        "z": "b09908b927c79022",
+        "name": "",
+        "group": "8cabfa32056e8eec",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "AUX",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "{{msg.background}}",
+        "className": "",
+        "icon": "",
+        "payload": "s3;",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 750,
+        "y": 560,
+        "wires": [
+            [
+                "e1a9400b6bd80728"
+            ]
+        ]
+    },
+    {
+        "id": "9c26c67a97c08bce",
+        "type": "ui_button",
+        "z": "b09908b927c79022",
+        "name": "",
+        "group": "8cabfa32056e8eec",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "All Off",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "s0;",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 750,
+        "y": 600,
+        "wires": [
+            [
+                "e1a9400b6bd80728"
+            ]
+        ]
+    },
+    {
+        "id": "1257bb2e2c5b6f6e",
+        "type": "http in",
+        "z": "b09908b927c79022",
+        "name": "Select Anrtenna HTTP",
+        "url": "/select_antenna",
+        "method": "post",
+        "upload": true,
+        "skipBodyParsing": false,
+        "swaggerDoc": "",
+        "x": 180,
+        "y": 260,
+        "wires": [
+            [
+                "d93118030facd11a",
+                "fa93b4cc7fd9691a",
+                "b6d6d15568e2f14d"
+            ]
+        ]
+    },
+    {
+        "id": "d93118030facd11a",
+        "type": "http response",
+        "z": "b09908b927c79022",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 570,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "fa93b4cc7fd9691a",
+        "type": "function",
+        "z": "b09908b927c79022",
+        "name": "Parse JSON",
+        "func": "// parse the msg.payload structure\nvar p1, p2, p3;\nvar serialString = \"\";\nif (typeof msg.payload.ant1 != \"undefined\") {\n    p1 = { payload: msg.payload.ant1, background: msg.payload.ant1 ? \"green\" : \"gray\"};\n    p2 = { payload: msg.payload.ant2, background: msg.payload.ant2 ? \"green\" : \"gray\" };\n    p3 = { payload: msg.payload.ant3, background: msg.payload.ant3 ? \"green\" : \"gray\" };\n}\nelse {\n    p1 = { payload: false, background: \"gray\" };\n    p2 = { payload: false, background: \"gray\" };\n    p3 = { payload: false, background: \"gray\" };\n}\nif (p1.payload) {\n    serialString = \"s1;\"\n}\nelse if (p2.payload) {\n    serialString = \"s2;\"\n\n}\nelse if (p3.payload) {\n    serialString = \"s3;\"\n\n}\nelse {\n    serialString = \"s0;\"\n}\n    return { payload: serialString };",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 260,
+        "wires": [
+            [
+                "e1a9400b6bd80728"
+            ]
+        ]
+    },
+    {
+        "id": "b6d6d15568e2f14d",
+        "type": "json",
+        "z": "b09908b927c79022",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 350,
+        "y": 160,
+        "wires": [
+            [
+                "61b7e533ec834610"
+            ]
+        ]
+    },
+    {
+        "id": "61b7e533ec834610",
+        "type": "debug",
+        "z": "b09908b927c79022",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 500,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "28e3e167442f79f9",
+        "type": "debug",
+        "z": "b09908b927c79022",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "cb68cbd735914470",
+        "type": "serial-port",
+        "serialport": "/dev/serial/by-id/usb-Raspberry_Pi_Pico_E660C06213844935-if02",
+        "serialbaud": "115200",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "}",
+        "bin": "false",
+        "out": "char",
+        "addchar": "",
+        "responsetimeout": "100"
+    },
+    {
+        "id": "8cabfa32056e8eec",
+        "type": "ui_group",
+        "name": "Input",
+        "tab": "6da4b2b7c2781bb8",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "6da4b2b7c2781bb8",
+        "type": "ui_tab",
+        "name": "K5KHK Shack",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "a8f87c149ed340cf",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-node-serialport": "2.0.3",
+            "node-red-dashboard": "3.6.6"
+        }
+    }
+]
