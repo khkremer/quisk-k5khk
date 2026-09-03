@@ -1,5 +1,9 @@
 # K5KHK Quisk / antenna-switch customizations
 
+## Background
+
+I run Quisk in a "remote head" configuration, but also use it for a local WSJT-X setup. My remote head is a custom iOS app. To connect my different radios to my one antenna, I use an antenna switch in a reverse configuration, so it's more like a radio switch. This antenna/radio switch uses a Raspberry Pi Pico to control the relays and is connected via Node-RED dashboard. This custom Quisk radio configuration combines both the remote head and the antenna switch.  
+
 Additions to Quisk (installed as a git checkout at `~/quisk/quisk`). Nothing here
 modifies tracked Quisk source, so the Quisk checkout stays pristine and updates
 are just `cd ~/quisk/quisk && git pull && make`.
