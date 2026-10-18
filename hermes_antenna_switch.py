@@ -17,6 +17,7 @@ import os
 import json
 import threading
 import requests
+import wx
 
 NODERED_URL  = "http://nodered.local:1880/select_antenna"
 STATUS_URL   = "http://nodered.local:1880/antenna_status"
@@ -30,14 +31,26 @@ class Hardware(BaseHardware):
     BaseHardware.__init__(self, app, conf)
 
   # ---- Node-RED HTTP ------------------------------------------------------
+  @staticmethod
+  def _log_from_thread(text):
+    # Quisk redirects sys.stdout into a wx.TextCtrl (its log window), so a
+    # print() from a background thread modifies a GTK widget off the GUI
+    # thread and crashes Quisk (Gtk:ERROR gtktextbtree.c / SIGSEGV).
+    # Hand the print to the GUI thread instead.
+    try:
+      wx.CallAfter(print, text)
+    except Exception:
+      pass
+
   def _post_antenna(self, data):
-    # Runs on a background thread: must not touch wx or Quisk state.
+    # Runs on a background thread: must not touch wx or Quisk state,
+    # and must not print() directly (see _log_from_thread).
     try:
       r = requests.post(NODERED_URL, json=data, timeout=HTTP_TIMEOUT)
       r.raise_for_status()
-      print("select_antenna OK: %s -> %s" % (data, r.text.strip()))
+      self._log_from_thread("select_antenna OK: %s -> %s" % (data, r.text.strip()))
     except Exception as e:
-      print("select_antenna FAILED %s: %s" % (data, e))
+      self._log_from_thread("select_antenna FAILED %s: %s" % (data, e))
 
   def select_antenna(self, ant1=False, ant2=False, ant3=False):
     data = {"ant1": ant1, "ant2": ant2, "ant3": ant3}
